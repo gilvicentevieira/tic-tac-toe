@@ -1,11 +1,33 @@
-const Player = ({name, symbol}) => {
+import { useState } from "react";
+
+const Player = ({ initialName, symbol }) => {
+  const [name, setName] = useState(initialName);
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleToggle = () => {
+    setIsEditing(prev=> !prev);
+  };
+
+  const handleChangingName = (e) => {
+    setName(e.target.value);
+  };
+
   return (
     <li>
       <span className="player">
-        <span className="player-name">{name}</span>
+        {isEditing ? (
+          <input
+            type="text"
+            defaultValue={name}
+            required
+            onChange={handleChangingName}
+          />
+        ) : (
+          <span className="player-name">{name}</span>
+        )}
         <span className="player-symbol">{symbol}</span>
       </span>
-      <button>edit</button>
+      <button onClick={handleToggle}>{isEditing ? "Save" : "Edit"}</button>
     </li>
   );
 };
